@@ -1,0 +1,35 @@
+name: Threadfix connector
+
+on: [ push ]
+
+permissions:
+  security-events: read
+  contents: read
+  
+jobs:
+  create_input_file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: GET code scanning alerts
+        uses: actions/checkout@v3
+      # this should be a script and should pull content based on pagination
+      # should also guard against no content 
+      - run: gh api repos/${{ github.repository }}/code-scanning/alerts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
+              
+      - name: Validate file 
+        run : |
+              cat input_file.json | grep "number" >/dev/null && echo "got data!" || exit 1; 
+          
+      - name: Debug failure
+        if: failure()
+        run: |
+             cat input_file.json && echo "no valid data to work with!"
+         
+      - name: Upload SARIF file
+        uses: actions/upload-artifact@v3
+        with:
+          name: SARIF
+          path: input_file.json
