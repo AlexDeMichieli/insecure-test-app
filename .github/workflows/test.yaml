@@ -16,8 +16,8 @@ jobs:
       # should also guard against no content 
       - run: |
               gh api repos/${{ github.repository }}/code-scanning/alerts --paginate > ./input_file.json
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+ #       env:
+  #        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
               
       - name: Validate file 
