@@ -38,7 +38,7 @@ def assemble_findings_for_run(finding_list, item):
     ref_rule_dict = make_ref_rule_dict(item)
     finding_dict = { }
 
-    #     # Create a random findingId because CodeQL doesn't track unique IDs across tool executions
+    #    # Create a random findingId because CodeQL doesn't track unique IDs across tool executions
     #     # TODO - May be able to use some of the fingerprint stuff to fill this in better
     letters = string.ascii_letters
     finding_id = ''.join(random.choice(letters) for i in range(256))
