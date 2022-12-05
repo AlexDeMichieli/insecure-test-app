@@ -16,6 +16,7 @@ jobs:
               gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              
       - name: Validate file 
         run : |
               cat input_file.json | grep "number" >/dev/null && echo "got data!" || exit 1; 
@@ -42,11 +43,11 @@ jobs:
         uses: actions/setup-python@v4
         with:
          python-version: '3.10'
-      - name: Download json file
+      - name: Download input file
         uses: actions/download-artifact@v3
         with:
          name: SARIF
-      - name: Run conversion script
+      - name: Convert to Threadfix file
         run: python sarif_converter.py input_file.json output_file.threadfix
       - name: Upload output file
         uses: actions/upload-artifact@v3
@@ -64,14 +65,14 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: SARIF
-      - name: Test Threadfix connection
+      - name: Test instance connection
         run: |
-            curl --insecure -H 'Accept: application/json' -H "Authorization: APIKEY ${{secrets.TFIX_API_KEY_GITHUB_TEAM}}" ${{secrets.TFIX_TEST_URL}}/latest/applications/1
+            curl --insecure -H 'Accept: application/json' -H "Authorization: APIKEY ${{secrets.TFIX_API_KEY}}" ${{secrets.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/${{secrets.TFIX_APP_ID}}
       - name: Check file
         run: |
             pwd && ls -a
       - name: Push to threadfix
         run: |
-               curl --insecure -H 'Accept: application/json' -H "Authorization: APIKEY ${{secrets.TFIX_API_KEY_GITHUB_TEAM}}" -X POST --form file=@output_file.threadfix ${{secrets.TFIX_TEST_URL}}/latest/applications/1/upload
+               curl --insecure -H 'Accept: application/json' -H "Authorization: APIKEY ${{secrets.TFIX_API_KEY}}" -X POST --form file=@output_file.threadfix ${{secrets.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/${{secrets.TFIX_APP_ID}}/upload
        
  
