@@ -17,9 +17,9 @@ jobs:
       - name: GET code scanning alerts
         uses: actions/checkout@v3
       - run: | 
-              gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
+              gh api repos/${ github.repository }/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
         env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         GITHUB_TOKEN: ${ secrets.GITHUB_TOKEN }
               
       - name: Validate file 
         run : |
@@ -71,12 +71,12 @@ jobs:
           name: SARIF
       - name: Test instance connection
         run: |
-            curl --insecure -H 'Accept: application/json' -H "Authorization: APIKEY ${{secrets.TFIX_API_KEY}}" ${{secrets.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/${{secrets.TFIX_APP_ID}}
+            curl --insecure -H 'Accept: application/json' -H "Authorization: APIKEY ${secrets.TFIX_API_KEY}" ${secrets.TFIX_INSTANCE_URL}/threadfix/rest/latest/applications/${secrets.TFIX_APP_ID}
       - name: Check file
         run: |
             pwd && ls -a
       - name: Push to threadfix
         run: |
-               curl --insecure -H 'Accept: application/json' -H "Authorization: APIKEY ${{secrets.TFIX_API_KEY}}" -X POST --form file=@output_file.threadfix ${{secrets.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/${{secrets.TFIX_APP_ID}}/upload
+               curl --insecure -H 'Accept: application/json' -H "Authorization: APIKEY ${{secrets.TFIX_API_KEY}}" -X POST --form file=@output_file.threadfix ${secrets.TFIX_INSTANCE_URL}/threadfix/rest/latest/applications/${secrets.TFIX_APP_ID}/upload
        
  
