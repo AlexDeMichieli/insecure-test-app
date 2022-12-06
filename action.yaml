@@ -1,4 +1,7 @@
 name: Threadfix connector
+description: a test application
+icon: alert-circle
+color: red
 
 on: [ push ]
 
