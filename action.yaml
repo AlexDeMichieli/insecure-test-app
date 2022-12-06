@@ -9,7 +9,7 @@ on: [ push ]
 permissions:
   security-events: read
   contents: read
-  runs-on: ubuntu-latest
+  runs: ubuntu-latest
 
   
 jobs:
