@@ -9,6 +9,8 @@ on: [ push ]
 permissions:
   security-events: read
   contents: read
+  runs-on: ubuntu-latest
+
   
 jobs:
  create_input_file:
