@@ -85,17 +85,16 @@ description: 'Greet someone'
 runs:
   using: "composite"
   steps:
-    - name: Use output
-      run: echo "My output is ${{ inputs.TFIX_API_KEY}}"
-      shell: bash
-    - name: GET code scanning alerts
-      #uses: actions/checkout@v3
+    - name: GeT code scanning alerts
       run: gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
       shell: bash
       env:
          GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN}}
     - name: Check Around
       run: cat input_file.json
+      shell: bash
+    - name: Validate file 
+      run : cat input_file.json | grep "number" >/dev/null && echo "got data!" || exit 1; 
       shell: bash
 
 
