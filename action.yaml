@@ -82,15 +82,6 @@
        
 name: Threadfix connector
 description: a test application
-branding:
-  icon: 'award'
-  color: 'green'
-
-permissions:
-  security-events: read
-  contents: read
-
-  
 runs:
   using: "composite"
     steps:
@@ -100,16 +91,13 @@ runs:
               gh api repos/${ github.repository }/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
         env:
          GITHUB_TOKEN: ${ secrets.GITHUB_TOKEN }
-
       - name: Validate file 
         run : |
               cat input_file.json | grep "number" >/dev/null && echo "got data!" || exit 1; 
-
       - name: Debug failure
         if: failure()
         run: |
              cat input_file.json && echo "no valid data to work with!"
-
       - name: Upload SARIF file
         uses: actions/upload-artifact@v3
         with:
