@@ -80,8 +80,11 @@
 #         run: |
 #                curl --insecure -H 'Accept: application/json' -H "Authorization: APIKEY ${secrets.TFIX_API_KEY}" -X POST --form file=@output_file.threadfix ${secrets.TFIX_INSTANCE_URL}/threadfix/rest/latest/applications/${secrets.TFIX_APP_ID}/upload
        
-name: 'Hello World'
-description: 'Greet someone'
+name: Threadfix connector
+description: Get code scanning results from GitHub and push them to your Threadfix application
+branding:
+  icon: 'award'
+  color: 'green'
 runs:
   using: "composite"
   steps:
@@ -96,5 +99,9 @@ runs:
     - name: Validate file 
       run : cat input_file.json | grep "number" >/dev/null && echo "got data!" || exit 1; 
       shell: bash
+     - name: Debug failure
+       if: failure()
+       run: cat input_file.json && echo "no valid data to work with!"
+       shell: bash
 
 
