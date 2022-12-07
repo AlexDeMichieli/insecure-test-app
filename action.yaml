@@ -87,11 +87,11 @@ runs:
   steps:
     - name: Set environment variables
         if: ${{ inputs.env_vars }}
-        run: |
-          for i in "${{ inputs.env_vars }}"
-          do
-            printf "%s\n" $i >> $GITHUB_ENV
-          done
+          run: |
+               for i in "${{ inputs.env_vars }}"
+               do
+                  printf "%s\n" $i >> $GITHUB_ENV
+               done
 #     - id: random-number-generator
 #       run: echo ${TFIX_API_KEY}
 #       shell: bash
