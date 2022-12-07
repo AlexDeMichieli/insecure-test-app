@@ -94,7 +94,10 @@ runs:
       env:
          GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN}}
     - name: Validate file 
-      run : cat input_file.json | grep "number" >/dev/null && echo "got data!" || echo "no valid data to work with!" && exit 1; 
+      run : cat input_file.json | grep "number" >/dev/null && echo "got data!" || exit 1; 
+      shell: bash
+    - name: Convert to Threadfix file
+      run: python sarif_converter.py input_file.json output_file.threadfix
       shell: bash
 
 
