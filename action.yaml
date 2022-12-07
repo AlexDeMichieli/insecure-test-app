@@ -85,8 +85,13 @@ description: 'Greet someone'
 runs:
   using: "composite"
   steps:
-    - id: random-number-generator
-      run: echo ${TFIX_API_KEY}
-      shell: bash
-      env:
-          TFIX_API_KEY: ${secrets.TFIX_API_KEY}
+    with:
+      env_vars: |
+        env1=value1
+        env2=value2
+        env3=value3
+#     - id: random-number-generator
+#       run: echo ${TFIX_API_KEY}
+#       shell: bash
+#       env:
+#           TFIX_API_KEY: ${secrets.TFIX_API_KEY}
