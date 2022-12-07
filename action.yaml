@@ -4,12 +4,13 @@ branding:
   icon: 'award'
   color: 'green'
 
+runs: ubuntu-latest
+
 on: [ push ]
 
 permissions:
   security-events: read
   contents: read
-  runs: ubuntu-latest
 
   
 jobs:
