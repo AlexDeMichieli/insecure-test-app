@@ -4,8 +4,6 @@ branding:
   icon: 'award'
   color: 'green'
 
-runs: ubuntu-latest
-
 on: [ push ]
 
 permissions:
