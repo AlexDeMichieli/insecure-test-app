@@ -85,11 +85,13 @@ description: 'Greet someone'
 runs:
   using: "composite"
   steps:
-    with:
-      env_vars: |
-        env1=value1
-        env2=value2
-        env3=value3
+    - name: Set environment variables
+        if: ${{ inputs.env_vars }}
+        run: |
+          for i in "${{ inputs.env_vars }}"
+          do
+            printf "%s\n" $i >> $GITHUB_ENV
+          done
 #     - id: random-number-generator
 #       run: echo ${TFIX_API_KEY}
 #       shell: bash
