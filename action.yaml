@@ -99,6 +99,11 @@ runs:
     - name: Convert to Threadfix file
       run: ls -a
       shell: bash
+    - name: Test
+    - uses: ./sarif_converter.py
+     run: ls -a
+     shell: bash
+
 
 
 
