@@ -86,7 +86,7 @@ runs:
   using: "composite"
   steps:
     - id: random-number-generator
-      run: echo $TFIX_API_KEY
+      run: echo ${TFIX_API_KEY}
       shell: bash
       env:
           TFIX_API_KEY: ${secrets.TFIX_API_KEY}
