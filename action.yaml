@@ -89,8 +89,8 @@ runs:
       run: echo "My output is ${{ inputs.TFIX_API_KEY}}"
       shell: bash
     - name: GET code scanning alerts
-      uses: actions/checkout@v3
-      run: echo "My output is ${{ inputs.TFIX_API_KEY}}"
+      #uses: actions/checkout@v3
+      run: echo "My output is ${{ inputs.GITHUB_REPOSITORY}}"
       shell: bash
       env:
          GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN}}
