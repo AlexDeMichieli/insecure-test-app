@@ -86,4 +86,6 @@ runs:
   using: "composite"
   steps:
     - name: Use output
-      run: echo "My output is ${{ steps.my-output.TFIX_API_KEY}}"
+      run: echo "My output is ${{ inputs.TFIX_API_KEY}}"
+      shell: bash
+
