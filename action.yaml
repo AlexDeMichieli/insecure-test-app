@@ -99,9 +99,6 @@ runs:
     - name: Convert to Threadfix file
       run: ls -a
       shell: bash
-    - name: Test
-      run: ls -a
-      shell: bash
 
 
 
