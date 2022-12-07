@@ -95,7 +95,7 @@ runs:
       env:
          GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN}}
     - name: Check Around
-      run: ls -a
+      run: cat input_file.json
       shell: bash
 
 
