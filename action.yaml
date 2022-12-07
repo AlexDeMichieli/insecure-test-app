@@ -97,11 +97,8 @@ runs:
       run: cat input_file.json
       shell: bash
     - name: Validate file 
-      run : cat input_file.json | grep "number" >/dev/null && echo "got data!" || exit 1; 
+      run : cat input_file.json | grep "number" >/dev/null && echo "got data!" || echo "no valid data to work with! && exit 1; 
       shell: bash
-     - name: Debug failure
-       if: failure()
-       run: cat input_file.json && echo "no valid data to work with!"
-       shell: bash
+
 
 
