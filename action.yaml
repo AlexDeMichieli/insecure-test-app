@@ -88,4 +88,10 @@ runs:
     - name: Use output
       run: echo "My output is ${{ inputs.TFIX_API_KEY}}"
       shell: bash
+      - name: GET code scanning alerts
+        uses: actions/checkout@v3
+      - run: | 
+              gh api repos/${{ inputs.GITHUB_REPOSITORY}}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
+        env:
+         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN}}
 
