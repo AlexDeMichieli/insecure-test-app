@@ -87,7 +87,7 @@ runs:
   steps:
     - name: Set environment variables
         if: ${{ inputs.env_vars }}
-          run: |
+           run: |
                for i in "${{ inputs.env_vars }}"
                do
                   printf "%s\n" $i >> $GITHUB_ENV
