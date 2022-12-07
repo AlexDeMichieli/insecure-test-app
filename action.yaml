@@ -88,7 +88,7 @@ branding:
 runs:
   using: "composite"
   steps:
-    - name: GeT code scanning alerts
+    - name: Get code scanning alerts
       run: gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
       shell: bash
       env:
