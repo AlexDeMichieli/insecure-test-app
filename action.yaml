@@ -100,9 +100,8 @@ runs:
       run: ls -a
       shell: bash
     - name: Test
-    - uses: ./sarif_converter.py
-     run: ls -a
-     shell: bash
+      run: ls -a
+      shell: bash
 
 
 
