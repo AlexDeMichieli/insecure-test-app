@@ -106,13 +106,11 @@ runs:
       run: |
             curl --location --request GET '${{ inputs.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/${{ inputs.TFIX_APP_ID}}' \
             --header 'Authorization: APIKEY ${{ inputs.TFIX_API_KEY}}' \
-            
       shell: bash
     - name: Push to threadfix
       run: |
              curl --location --request POST '${{ inputs.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/${{ inputs.TFIX_APP_ID}}/upload' \
             --header 'Accept: application/json' \
             --header 'Authorization: APIKEY ${{ inputs.TFIX_API_KEY}}	' \
-            --form 'file="@output_file.threadfix"'
-            
+            --form 'file="@output_file.threadfix"' 
       shell: bash
