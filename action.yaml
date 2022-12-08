@@ -102,9 +102,10 @@ runs:
     - name: Check file
       run: cat output_file.threadfix
       shell: bash
-#     - name: Test instance connection
-#       run: curl --insecure -H 'Accept: application/json' -H "Authorization: APIKEY ${{inputs.TFIX_API_KEY}}" ${{inputs.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/${{inputs.TFIX_APP_ID}}
-#       shell: bash
+    - name: Test instance connection
+      run: |
+            curl --location --request GET 'https://api.chucknorris.io/jokes/random'      
+      shell: bash
 
 
 
