@@ -3,6 +3,16 @@ description: Get code scanning results from GitHub and push them to your Threadf
 branding:
   icon: 'award'
   color: 'green'
+inputs:
+  TFIX_API_KEY:
+    description: The API key for your Threadfix instance.
+    required: true
+  TFIX_INSTANCE_URL:
+    description: The URL for your Threadfix instance.
+    required: true
+  TFIX_APP_ID:
+    description: The ID of the Threadfix application to which you want to upload the code scanning results.
+    required: true
 runs:
   using: "composite"
   steps:
