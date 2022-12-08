@@ -105,13 +105,6 @@ runs:
     - name: Test instance connection
       run: curl --insecure -H 'Accept: application/json' -H "Authorization: APIKEY ${{inputs.TFIX_API_KEY}}" ${{inputs.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/${{inputs.TFIX_APP_ID}}
       shell: bash
-#       - name: Check file
-#         run: |
-#             pwd && ls -a
-#       - name: Push to threadfix
-#         run: |
-#                curl --insecure -H 'Accept: application/json' -H "Authorization: APIKEY ${secrets.TFIX_API_KEY}" -X POST --form file=@output_file.threadfix ${secrets.TFIX_INSTANCE_URL}/threadfix/rest/latest/applications/${secrets.TFIX_APP_ID}/upload
-
 
 
 
