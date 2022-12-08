@@ -104,7 +104,9 @@ runs:
       shell: bash
     - name: Test instance connection
       run: |
-            curl --location --request GET 'https://api.chucknorris.io/jokes/random'      
+            curl --location --request GET '${{ inputs.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/${{ inputs.TFIX_APP_ID}}' \
+            --header 'Authorization: APIKEY ${{ inputs.TFIX_API_KEY}}' \
+            
       shell: bash
 
 
