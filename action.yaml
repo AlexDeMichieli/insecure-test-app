@@ -99,7 +99,6 @@ runs:
     - name: Convert to Threadfix file
       run: python ${{ github.action_path }}/sarif_converter.py input_file.json output_file.threadfix
       shell: bash
-    - name: Check file
     - name: Test instance connection
       run: |
             curl --location --request GET '${{ inputs.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/${{ inputs.TFIX_APP_ID}}' \
