@@ -112,7 +112,7 @@ output = { }
 
 # Metadata
 output['collectionType'] = 'SAST'
-output['source'] = 'CodeQL'
+output['source'] = 'GitHub Advanced Security'
 
 
 # Handle timestamp 
