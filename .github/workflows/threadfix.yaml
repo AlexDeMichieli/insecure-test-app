@@ -75,10 +75,5 @@ jobs:
           name: SARIF
       - name: Push to threadfix
         run: |
-            curl --location --request POST '${{inputs.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/${{inputs.TFIX_APP_ID}}/upload' \
-            --header 'Accept: application/json' \
-            --header 'Authorization: APIKEY ${{inputs.TFIX_API_KEY}}' \
-            --form 'file=@"output_file.threadfix"'     
- 
-
+               curl --insecure -H 'Accept: application/json' -H "Authorization: APIKEY ${{secrets.TFIX_API_KEY}}" -X POST --form file=@output_file.threadfix ${{secrets.TFIX_INSTANCE_URL}}/threadfix/latest/applications/1/upload
 
