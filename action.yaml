@@ -16,8 +16,14 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Set the date variable
+      run: date_var=$(date -u +"%a, %d %b %Y %T %Z")
+      shell: bash
+    - name: Check date
+      run: echo $date_var
+      shell: bash
     - name: Get code scanning alerts
-      run: gh api repos/${{github.repository}}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
+      run: gh api repos/${{github.repository}}/code-scanning/alerts --paginate -H "If-Modified-Since: $date_var" | jq --slurp 'flatten' > ./input_file.json
       shell: bash
       env:
          GITHUB_TOKEN: ${{github.token}}
