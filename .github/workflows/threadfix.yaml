@@ -11,11 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set the date variable
-        run: date_var=$(date -u +"%a, %d %b %Y %T %Z")
-        shell: bash
+        run: | 
+             date_var=$(date -u +"%a, %d %b %Y %T %Z")
       - name: Check date
-        run: echo $date_var
-        shell: bash
+        run: |
+             echo $date_var
       - name: GET code scanning alerts
         uses: actions/checkout@v3
       - run: | 
