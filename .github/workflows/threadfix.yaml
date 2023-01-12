@@ -10,10 +10,16 @@ jobs:
  create_input_file:
     runs-on: ubuntu-latest
     steps:
+      - name: Set the date variable
+        run: date_var=$(date -u +"%a, %d %b %Y %T %Z")
+        shell: bash
+      - name: Check date
+        run: echo $date_var
+        shell: bash
       - name: GET code scanning alerts
         uses: actions/checkout@v3
       - run: | 
-              gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
+              gh api repos/${{ github.repository }}/code-scanning/alerts --paginate "If-Modified-Since: $date_var" | jq --slurp 'flatten' > ./input_file.json
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Validate file 
