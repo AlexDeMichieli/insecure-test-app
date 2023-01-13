@@ -21,15 +21,15 @@ jobs:
                 exit 1
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: GET code scanning alerts
-#         uses: actions/checkout@v3
-      - run: | 
-              gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
-        env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Validate file 
-        run : |
-              cat input_file.json | grep "number" >/dev/null && echo "got data!" || exit 1; 
+#       - name: GET code scanning alerts
+# #         uses: actions/checkout@v3
+#       - run: | 
+#               gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
+#         env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#       - name: Validate file 
+#         run : |
+#               cat input_file.json | grep "number" >/dev/null && echo "got data!" || exit 1; 
           
 #       - name: Debug failure
 #         if: failure()
