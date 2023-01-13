@@ -10,21 +10,28 @@ jobs:
  create_input_file:
     runs-on: ubuntu-latest
     steps:
-      - name: Set the date variable
-        run: | 
-             date_var=$(date -u +"%a, %d %b %Y %T %Z")
-      - name: Check date
+      - name: Get ETag
         run: |
-             echo $date_var
+            etag=$(curl -I https://api.github.com/repos/${{ github.repository }}/code-scanning/alerts | grep 'ETag' | awk '{print $2}')
       - name: GET code scanning alerts
         uses: actions/checkout@v3
       - run: | 
-              gh api repos/${{ github.repository }}/code-scanning/alerts --paginate -H "If-Modified-Since: $date_var" | jq --slurp 'flatten' > ./input_file.json
+              gh api repos/${{ github.repository }}/code-scanning/alerts --paginate -H "If-None-Match: ${{ steps.get_etag.outputs.etag }}" | jq --slurp 'flatten' > ./input_file.json
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Validate file 
         run : |
-              cat input_file.json | grep "number" >/dev/null && echo "got data!" || exit 1; 
+              if [ "$(gh api repos/${{ github.repository }}/code-scanning/alerts --paginate -H "If-None-Match: ${{ steps.get_etag.outputs.etag }}" -w "%{http_code}")" == "304" ]; then
+              echo "Resource has not been modified, exiting."
+              exit 0
+              fi
+              if [ -s input_file.json ]; then
+              if grep -q "number" input_file.json; then
+              echo "Got data!"
+              else
+              echo "No valid data to work with!"
+              exit 1
+              fi
           
       - name: Debug failure
         if: failure()
