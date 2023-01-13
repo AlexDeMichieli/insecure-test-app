@@ -13,16 +13,17 @@ jobs:
       - name: Get Last Modified Value
         run: | 
              last_modified=$(gh api repos/${{ github.repository }}/code-scanning/alerts -i |  grep Last-Modified | awk -F ': ' '{print $2}')
-      - name: GET code scanning alerts
-        uses: actions/checkout@v3
+      - name: Check if modified
       - run: | 
               http_status=$( gh api repos/${{ github.repository }}/code-scanning/alerts -H "If-Modified-Since: $last_modified" -i | grep "HTTP" | awk '{print $2}')
               if [ $http_status = "304" ]; then
-                echo $http_status
-              else
-                gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
-              fi
-      ##. gh api repos/${{ github.repository }}/code-scanning/alerts --paginate -H "If-Modified-Since: $last_modified" | jq --slurp 'flatten' > ./input_file.json
+                exit 1
+        env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get Data
+        uses: actions/checkout@v3
+      - run | 
+             gh api repos/${{ github.repository }}/code-scanning/alerts --paginate -H "If-Modified-Since: $last_modified" | jq --slurp 'flatten' > ./input_file.json
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Validate file 
