@@ -10,13 +10,19 @@ jobs:
  create_input_file:
     runs-on: ubuntu-latest
     steps:
-      - name: Set the date variable
+      - name: Get Last Modified Value
         run: | 
-             last_modified=$(gh api repos/dsp-testing/alex-testing/code-scanning/alerts -i |  grep Last-Modified | awk -F ': ' '{print $2}')
+             last_modified=$(gh api repos/${{ github.repository }}/code-scanning/alerts -i |  grep Last-Modified | awk -F ': ' '{print $2}')
       - name: GET code scanning alerts
         uses: actions/checkout@v3
       - run: | 
-              gh api repos/${{ github.repository }}/code-scanning/alerts --paginate -H "If-Modified-Since: $last_modified" | jq --slurp 'flatten' > ./input_file.json
+              http_status=$( gh api repos/${{ github.repository }}/code-scanning/alerts -H "If-Modified-Since: $last_modified" -i | grep "HTTP" | awk '{print $2}')
+              if [ $http_status = "304" ]; then
+                exit
+              else
+                gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
+              fi
+      ##. gh api repos/${{ github.repository }}/code-scanning/alerts --paginate -H "If-Modified-Since: $last_modified" | jq --slurp 'flatten' > ./input_file.json
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Validate file 
