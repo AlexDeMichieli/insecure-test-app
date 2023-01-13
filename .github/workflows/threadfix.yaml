@@ -10,28 +10,21 @@ jobs:
  create_input_file:
     runs-on: ubuntu-latest
     steps:
-      - name: Get ETag
+      - name: Set the date variable
+        run: | 
+             last_modified=$(curl -s -I https://api.github.com/repos/${{ github.repository }}/code-scanning/alerts | grep "Last-Modified" | awk '{print $2}')
+      - name: Check date
         run: |
-            etag=$(curl -I https://api.github.com/repos/${{ github.repository }}/code-scanning/alerts | grep 'ETag' | awk '{print $2}')
+             echo $date_var
       - name: GET code scanning alerts
         uses: actions/checkout@v3
       - run: | 
-              gh api repos/${{ github.repository }}/code-scanning/alerts --paginate -H "If-None-Match: ${{ steps.get_etag.outputs.etag }}" | jq --slurp 'flatten' > ./input_file.json
+              gh api repos/${{ github.repository }}/code-scanning/alerts --paginate -H "If-Modified-Since: $last_modified" | jq --slurp 'flatten' > ./input_file.json
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Validate file 
         run : |
-              if [ "$(gh api repos/${{ github.repository }}/code-scanning/alerts --paginate -H "If-None-Match: ${{ steps.get_etag.outputs.etag }}" -w "%{http_code}")" == "304" ]; then
-              echo "Resource has not been modified, exiting."
-              exit 0
-              fi
-              if [ -s input_file.json ]; then
-              if grep -q "number" input_file.json; then
-              echo "Got data!"
-              else
-              echo "No valid data to work with!"
-              exit 1
-              fi
+              cat input_file.json | grep "number" >/dev/null && echo "got data!" || exit 1; 
           
       - name: Debug failure
         if: failure()
@@ -89,4 +82,3 @@ jobs:
       - name: Push to threadfix
         run: |
                curl --insecure -H 'Accept: application/json' -H "Authorization: APIKEY ${{secrets.TFIX_API_KEY}}" -X POST --form file=@output_file.threadfix ${{secrets.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/1/upload
-
