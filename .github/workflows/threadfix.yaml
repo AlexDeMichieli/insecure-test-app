@@ -16,12 +16,12 @@ jobs:
              last_modified=$(gh api repos/${{ github.repository }}/code-scanning/alerts -i |  grep Last-Modified | awk -F ': ' '{print $2}')
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Check if modified
-        uses: actions/checkout@v3
-      - run: | 
-              http_status=$( gh api repos/${{ github.repository }}/code-scanning/alerts -H "If-Modified-Since: $last_modified" -i | grep "HTTP" | awk '{print $2}')
-        env:
-           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#       - name: Check if modified
+#         uses: actions/checkout@v3
+#       - run: | 
+#               http_status=$( gh api repos/${{ github.repository }}/code-scanning/alerts -H "If-Modified-Since: $last_modified" -i | grep "HTTP" | awk '{print $2}')
+#        env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 #       - name: GET code scanning alerts
 # #         uses: actions/checkout@v3
 #       - run: | 
