@@ -11,7 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Get Last Modified Value
-        run: | 
+        uses: actions/checkout@v3
+      - run: | 
              last_modified=$(gh api repos/${{ github.repository }}/code-scanning/alerts -i |  grep Last-Modified | awk -F ': ' '{print $2}')
       - name: Check if modified
       - run: | 
@@ -21,7 +22,7 @@ jobs:
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: GET code scanning alerts
-        uses: actions/checkout@v3
+#         uses: actions/checkout@v3
       - run: | 
               gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
         env:
