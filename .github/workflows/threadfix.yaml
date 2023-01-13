@@ -19,7 +19,7 @@ jobs:
       - run: | 
               http_status=$( gh api repos/${{ github.repository }}/code-scanning/alerts -H "If-Modified-Since: $last_modified" -i | grep "HTTP" | awk '{print $2}')
               if [ $http_status = "304" ]; then
-                exit 1
+                echo "hello"
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 #       - name: GET code scanning alerts
