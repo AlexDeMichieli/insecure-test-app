@@ -18,7 +18,7 @@ jobs:
       - run: | 
               http_status=$( gh api repos/${{ github.repository }}/code-scanning/alerts -H "If-Modified-Since: $last_modified" -i | grep "HTTP" | awk '{print $2}')
               if [ $http_status = "304" ]; then
-                echo "got data"
+                echo $http_status
               else
                 gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
               fi
