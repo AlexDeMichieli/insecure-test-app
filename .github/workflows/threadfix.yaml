@@ -24,6 +24,7 @@ jobs:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
          
       - name: Chec values
+        uses: actions/checkout@v3
       - run: |
              echo $http_status && echo $last_modified
 #       - name: GET code scanning alerts
