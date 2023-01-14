@@ -14,7 +14,9 @@ jobs:
         uses: actions/checkout@v3
       - run: | 
              LAST_MODIFIED=$(gh api repos/alexdemichieli/insecure-test-app/code-scanning/alerts -i | grep -i "Last-Modified" | sed 's/Last-Modified: //g')
+             http_status=$( gh api repos/${{ github.repository }}/code-scanning/alerts -H "If-Modified-Since: $LAST_MODIFIED" -i | grep "HTTP" | awk '{print $2}')
              echo $LAST_MODIFIED
+             echo $http_status
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Echo Last Modified Value
