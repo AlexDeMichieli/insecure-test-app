@@ -26,7 +26,11 @@ jobs:
       - name: Chec values
         uses: actions/checkout@v3
       - run: |
-             echo "$http_status"
+             if [ $http_status = "304" ]; then
+                echo "hello"
+             else
+                echo "gg"
+             fi
 #       - name: GET code scanning alerts
 # #         uses: actions/checkout@v3
 #       - run: | 
