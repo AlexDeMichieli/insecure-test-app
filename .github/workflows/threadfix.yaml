@@ -22,6 +22,10 @@ jobs:
                http_status=$( gh api repos/${{ github.repository }}/code-scanning/alerts -H "If-Modified-Since: $last_modified" -i | grep "HTTP" | awk '{print $2}')
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         
+      - name: Chec values
+      - run: |
+             echo $http_status && echo $last_modified
 #       - name: GET code scanning alerts
 # #         uses: actions/checkout@v3
 #       - run: | 
