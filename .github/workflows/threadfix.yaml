@@ -17,6 +17,11 @@ jobs:
              http_status=$( gh api repos/${{ github.repository }}/code-scanning/alerts -H "If-Modified-Since: $LAST_MODIFIED" -i | grep "HTTP" | awk '{print $2}')
              echo $LAST_MODIFIED
              echo $http_status
+             if [ $http_status = "304" ]; then
+              exit 1
+             else
+              gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
+              fi
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Echo Last Modified Value
