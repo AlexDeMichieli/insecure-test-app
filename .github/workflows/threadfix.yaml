@@ -13,7 +13,7 @@ jobs:
       - name: Get Last Modified Value
         uses: actions/checkout@v3
       - run: | 
-             LAST_MODIFIED=$(gh api repos/alexdemichieli/insecure-test-app/code-scanning/alerts -i | grep -i "Last-Modified" | sed 's/Last-Modified: //g')
+             LAST_MODIFIED=$(gh api repos/${{ github.repository }}/code-scanning/alerts -i | grep -i "Last-Modified" | sed 's/Last-Modified: //g')
              http_status=$( gh api repos/${{ github.repository }}/code-scanning/alerts -H "If-Modified-Since: $LAST_MODIFIED" -i | grep "HTTP" | awk '{print $2}')
              echo $LAST_MODIFIED
              echo $http_status
