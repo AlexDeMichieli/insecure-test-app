@@ -26,7 +26,7 @@ jobs:
       - name: Chec values
         uses: actions/checkout@v3
       - run: |
-             echo $http_status && echo $last_modified
+             echo "$http_status"
 #       - name: GET code scanning alerts
 # #         uses: actions/checkout@v3
 #       - run: | 
