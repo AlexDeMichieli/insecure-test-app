@@ -38,7 +38,7 @@ jobs:
       - name: Output variable
         uses: actions/checkout@v3
       - run: |
-              echo ${{ http_status }}
+              echo ${{ HTTP }}
         env:
          HTTP: ${{ env.http_status }} 
 #  create_output_file:
