@@ -22,7 +22,7 @@ jobs:
       - name: Get Last Modified Value
         uses: actions/checkout@v3
       - run: |              
-              latest_import_time=$(curl --location --request GET ' ${{secrets.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/1/scans' \
+              latest_import_time=$(curl --location --request GET '${{secrets.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/1/scans' \
               --header 'Accept: application/json' \
               --header 'Authorization: APIKEY ${{secrets.TFIX_API_KEY}}' \  | jq '.object[0].importTime')
               
