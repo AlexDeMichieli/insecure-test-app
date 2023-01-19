@@ -34,7 +34,7 @@ jobs:
          variable: ${{ env.http_status }}
        
       - name: Output variable
-      - run: echo "The variable contains: $variable"
+      - run: echo "The variable contains:$variable"
 
 #  create_output_file:
 #     runs-on: ubuntu-latest
