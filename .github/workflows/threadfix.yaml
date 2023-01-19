@@ -25,16 +25,18 @@ jobs:
               
               timestamp_conversion=$(TZ=GMT date -d @$(($latest_import_time/1000)) +"%a, %d %b %Y %T %Z")
               
-              http_status=$( gh api repos/${{ github.repository }}/code-scanning/alerts -H "If-Modified-Since: $timestamp_conversion" -i | grep "HTTP" | awk '{print $2}')
+              http_status=$( gh api repos/${{ github.repository }}/code-scanning/alerts -H "If-Modified-Since: $timestamp_conversion" -i | grep "HTTP" | awk '{print $2}') >> $GITHUB_ENV
               echo $timestamp_conversion
               echo $http_status
                             
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-         variable: ${{ env.http_status }}
+         
        
       - name: Output variable
-      - run: echo "The variable contains:$variable"
+        uses: actions/checkout@v3
+      - run: |
+              echo ${{ env.http_status }}
 
 #  create_output_file:
 #     runs-on: ubuntu-latest
