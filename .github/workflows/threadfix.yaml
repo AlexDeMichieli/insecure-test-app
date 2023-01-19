@@ -80,7 +80,7 @@
 #         run: |
 #                curl --insecure -H 'Accept: application/json' -H "Authorization: APIKEY ${{secrets.TFIX_API_KEY}}" -X POST --form file=@output_file.threadfix ${{secrets.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/1/upload
                
- name: Threadfix connector
+name: Threadfix connector
 
 on: [ push ]
 
