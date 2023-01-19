@@ -43,7 +43,8 @@ jobs:
               value=`cat output_file.threadfix`
               echo $value
               ls -a
-
+        env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
 
          
 #  create_output_file:
