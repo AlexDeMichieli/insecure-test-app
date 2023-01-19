@@ -24,6 +24,7 @@ jobs:
               latest_import_time=$(curl --location --request GET '${{secrets.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/1/scans' \
               --header 'Accept: application/json' \
               --header 'Authorization: APIKEY ${{secrets.TFIX_API_KEY}}' | jq '.object[0].importTime')
+              timestamp_conversion=$(TZ=GMT date -d @$(($latest_import_time/1000)) +"%a, %d %b %Y %T %Z")
               gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
