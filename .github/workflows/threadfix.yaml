@@ -27,9 +27,9 @@ jobs:
       - run: |              
               latest_import_time=$(curl --location --request GET '${{secrets.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/1/scans' \
               --header 'Accept: application/json' \
-              --header 'Authorization: APIKEY ${{secrets.TFIX_API_KEY}}' \  | jq '.object[0].importTime')
+              --header 'Authorization: APIKEY ${{secrets.TFIX_API_KEY}}' | jq '.object[0].importTime')
         env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
 
 #  create_output_file:
 #     runs-on: ubuntu-latest
