@@ -24,8 +24,6 @@ jobs:
               
               timestamp_conversion=$(TZ=GMT date -d @$(($latest_import_time/1000)) +"%a, %d %b %Y %T %Z")
               http_status=$( gh api repos/${{ github.repository }}/code-scanning/alerts -H "If-Modified-Since: $timestamp_conversion" -i | grep "HTTP" | awk '{print $2}')
-              echo $timestamp_conversion
-              echo $http_status
               
               gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
         env:
