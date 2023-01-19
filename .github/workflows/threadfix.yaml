@@ -18,42 +18,46 @@ jobs:
       - name: GET code scanning alerts
         uses: actions/checkout@v3
       - run: | 
+              latest_import_time=$(curl --location --request GET '${{secrets.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/1/scans' \
+              --header 'Accept: application/json' \
+              --header 'Authorization: APIKEY ${{secrets.TFIX_API_KEY}}' | jq '.object[0].importTime')
+              
               gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Validate file 
         run : |
               cat input_file.json | grep "number" >/dev/null && echo "got data!" || exit 1; 
-      - name: Get Last Modified Value
-        uses: actions/checkout@v3
-      - run: |     
+#       - name: Get Last Modified Value
+#         uses: actions/checkout@v3
+#       - run: |     
          
-              latest_import_time=$(curl --location --request GET '${{secrets.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/1/scans' \
-              --header 'Accept: application/json' \
-              --header 'Authorization: APIKEY ${{secrets.TFIX_API_KEY}}' | jq '.object[0].importTime')
+#               latest_import_time=$(curl --location --request GET '${{secrets.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/1/scans' \
+#               --header 'Accept: application/json' \
+#               --header 'Authorization: APIKEY ${{secrets.TFIX_API_KEY}}' | jq '.object[0].importTime')
               
-              timestamp_conversion=$(TZ=GMT date -d @$(($latest_import_time/1000)) +"%a, %d %b %Y %T %Z")
+#               timestamp_conversion=$(TZ=GMT date -d @$(($latest_import_time/1000)) +"%a, %d %b %Y %T %Z")
               
-              http_status=$( gh api repos/${{ github.repository }}/code-scanning/alerts -H "If-Modified-Since: $timestamp_conversion" -i | grep "HTTP" | awk '{print $2}')
-              echo "status=$http_status" >> $GITHUB_ENV
+#               http_status=$( gh api repos/${{ github.repository }}/code-scanning/alerts -H "If-Modified-Since: $timestamp_conversion" -i | grep "HTTP" | awk '{print $2}')
+#               echo "status=$http_status" >> $GITHUB_ENV
               
-              echo $timestamp_conversion
-              echo $http_status
+#               echo $timestamp_conversion
+#               echo $http_status
                             
-        env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+#         env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
          
        
-      - name: Test file
-        uses: actions/checkout@v3
-      - run: |
-              echo "${{ env.status }}"
-              gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
-              value=`cat output_file.threadfix`
-              echo $value
-              ls -a
-        env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+#       - name: Test file
+#         uses: actions/checkout@v3
+#       - run: |
+#               echo "${{ env.status }}"
+#               gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
+#               value=`cat output_file.threadfix`
+#               echo $value
+#               ls -a
+#         env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
 
          
 #  create_output_file:
