@@ -21,51 +21,31 @@ jobs:
       - name: GET code scanning alerts
         uses: actions/checkout@v3
       - run: | 
-          latest_import_time=$(curl --location --request GET '${{secrets.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/1/scans' \
-          --header 'Accept: application/json' \
-          --header 'Authorization: APIKEY ${{secrets.TFIX_API_KEY}}' | jq '.object[0].importTime')
-          timestamp_conversion=$(TZ=GMT date -d @$(($latest_import_time/1000)) +"%a, %d %b %Y %T %Z")
-          http_status=$( gh api repos/${{ github.repository }}/code-scanning/alerts -H "If-Modified-Since: $timestamp_conversion" -i | grep "HTTP" | awk '{print $2}')
-          echo $http_status
-          echo $timestamp_conversion
-          if [ "$http_status" == "304" ]; then
-            echo "No new alerts found"
-            exit 0;
-          else
-            gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
-          fi
-    env:
-     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-#       - name: GET code scanning alerts
-#         uses: actions/checkout@v3
-#       - run: | 
-#               latest_import_time=$(curl --location --request GET '${{secrets.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/1/scans' \
-#               --header 'Accept: application/json' \
-#               --header 'Authorization: APIKEY ${{secrets.TFIX_API_KEY}}' | jq '.object[0].importTime')
-#               timestamp_conversion=$(TZ=GMT date -d @$(($latest_import_time/1000)) +"%a, %d %b %Y %T %Z")
-#               http_status=$( gh api repos/${{ github.repository }}/code-scanning/alerts -H "If-Modified-Since: $timestamp_conversion" -i | grep "HTTP" | awk '{print $2}')
-#               echo $http_status
-#               echo $timestamp_conversion
-#               gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
-#         env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#       - name: Validate file 
-#         run : |
-#               cat input_file.json | grep "number" >/dev/null && echo "got data!" || exit 1; 
+              latest_import_time=$(curl --location --request GET '${{secrets.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/1/scans' \
+              --header 'Accept: application/json' \
+              --header 'Authorization: APIKEY ${{secrets.TFIX_API_KEY}}' | jq '.object[0].importTime')
+              timestamp_conversion=$(TZ=GMT date -d @$(($latest_import_time/1000)) +"%a, %d %b %Y %T %Z")
+              http_status=$( gh api repos/${{ github.repository }}/code-scanning/alerts -H "If-Modified-Since: $timestamp_conversion" -i | grep "HTTP" | awk '{print $2}')
+              echo $http_status
+              echo $timestamp_conversion
+              gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
+        env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Validate file 
+        run : |
+              cat input_file.json | grep "number" >/dev/null && echo "got data!" || exit 1; 
           
-#       - name: Debug failure
-#         if: failure()
-#         run: |
-#              cat input_file.json && echo "no valid data to work with!"
+      - name: Debug failure
+        if: failure()
+        run: |
+             cat input_file.json && echo "no valid data to work with!"
  
-#       - name: Upload SARIF file
-#         uses: actions/upload-artifact@v3
-#         with:
-#           name: SARIF
-#           path: input_file.json
+      - name: Upload SARIF file
+        uses: actions/upload-artifact@v3
+        with:
+          name: SARIF
+          path: input_file.json
        
-
                
                           
 
