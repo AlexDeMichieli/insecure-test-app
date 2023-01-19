@@ -36,12 +36,15 @@ jobs:
          
        
       - name: Set variable
-        run: echo "export TEST_VAR=hello world" >> $GITHUB_ENV
+        run: echo "TERMINUS_RELEASE=$TERMINUS_RELEASE" >> $GITHUB_ENV
         shell: bash
 
-      - name: Print variable
-        run: echo "The value of TEST_VAR is $TEST_VAR"
+      - name: Install Terminus
         shell: bash
+        run: |
+           echo "Installing Terminus v $TERMINUS_RELEASE"
+        env:
+         TERMINUS_RELEASE: ${{ env.TERMINUS_RELEASE }}
          
 #  create_output_file:
 #     runs-on: ubuntu-latest
