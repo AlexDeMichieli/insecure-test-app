@@ -36,7 +36,7 @@ jobs:
          
        
       - name: Set variable
-        run: echo "export TEST_VAR=hello world" >> $GITHUB_ENV
+        run: echo "${{ env.action_state }}"
         shell: bash
 
          
