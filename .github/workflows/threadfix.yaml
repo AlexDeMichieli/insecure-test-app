@@ -37,9 +37,11 @@ jobs:
        
       - name: Set variable
         run: echo "export TEST_VAR=hello world" >> $GITHUB_ENV
+        shell: bash
 
       - name: Print variable
         run: echo "The value of TEST_VAR is $TEST_VAR"
+        shell: bash
          
 #  create_output_file:
 #     runs-on: ubuntu-latest
