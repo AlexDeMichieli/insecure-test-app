@@ -1,3 +1,9 @@
+#    if [ $http_status = "304" ]; then
+#                 exit 1
+#               else
+#                 gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
+#               fi
+
 name: Threadfix connector
 
 on: [ push ]
@@ -24,15 +30,8 @@ jobs:
               echo $timestamp_conversion
               echo $http_status
               
-              if [ $http_status = "304" ]; then
-                exit 1
-              else
-                gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
-                value=`cat output_file.threadfix`
-                echo $value
-                ls -a
-              fi
-
+              gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
+              
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
 
