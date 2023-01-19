@@ -21,7 +21,7 @@ jobs:
               echo $http_status
               echo $timestamp_conversion
               if [ "$http_status" == "304" ]; then
-                echo "No new alerts found"
+                echo "No new alerts found, terminating"
                 exit 0;
               else
                 gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
