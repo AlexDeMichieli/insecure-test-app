@@ -14,11 +14,8 @@ permissions:
 jobs:
  create_input_file:
     runs-on: ubuntu-latest
-    outputs:
-      output1: ${{ steps.step1.outputs.test }}
     steps:
       - name: Get Last Modified Value
-      - id: step1
         uses: actions/checkout@v3
       - run: |     
          
@@ -39,7 +36,7 @@ jobs:
          
        
       - name: Set variable
-        run: echo "${{ env.action_state }}"
+        run: echo "export TEST_VAR=hello world" >> $GITHUB_ENV
         shell: bash
 
          
