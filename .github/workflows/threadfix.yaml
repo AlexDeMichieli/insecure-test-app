@@ -5,31 +5,31 @@ on: [ push ]
 permissions:
   security-events: read
   contents: read
-  
+ # gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
+             # LAST_MODIFIED=$(gh api repos/${{ github.repository }}/code-scanning/alerts -i | grep -i "Last-Modified" | sed 's/Last-Modified: //g')
+#               echo $timestamp_conversion
+#               echo $http_status
+#               if [ $http_status = "304" ]; then
+#                 exit 1
+#               else
+#                 gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
+#               fi
+
 jobs:
  create_input_file:
     runs-on: ubuntu-latest
     steps:
       - name: Get Last Modified Value
         uses: actions/checkout@v3
-      - run: | 
-             # gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
-             
+      - run: |              
               latest_import_time=$(curl --location --request GET ' ${{secrets.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/1/scans' \
               --header 'Accept: application/json' \
               --header 'Authorization: APIKEY ${{secrets.TFIX_API_KEY}}' \  | jq '.object[0].importTime')
               
               timestamp_conversion=$(TZ=GMT date -r $(($latest_import_time/1000)) +"%a, %d %b %Y %T %Z")
 
-             # LAST_MODIFIED=$(gh api repos/${{ github.repository }}/code-scanning/alerts -i | grep -i "Last-Modified" | sed 's/Last-Modified: //g')
               http_status=$( gh api repos/${{ github.repository }}/code-scanning/alerts -H "If-Modified-Since: $timestamp_conversion" -i | grep "HTTP" | awk '{print $2}')
-              echo $timestamp_conversion
-              echo $http_status
-              if [ $http_status = "304" ]; then
-                exit 1
-              else
-                gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
-              fi
+             
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
 
