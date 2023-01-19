@@ -28,7 +28,12 @@ jobs:
               http_status=$( gh api repos/${{ github.repository }}/code-scanning/alerts -H "If-Modified-Since: $timestamp_conversion" -i | grep "HTTP" | awk '{print $2}')
               echo $http_status
               echo $timestamp_conversion
-              gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
+              if [ "$http_status" == "304" ]; then
+                echo "No new alerts found"
+                exit 0;
+              else
+                gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
+              fi
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Validate file 
