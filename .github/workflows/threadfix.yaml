@@ -14,8 +14,11 @@ permissions:
 jobs:
  create_input_file:
     runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ steps.step1.outputs.test }}
     steps:
       - name: Get Last Modified Value
+      - id: step1
         uses: actions/checkout@v3
       - run: |     
          
@@ -26,7 +29,7 @@ jobs:
               timestamp_conversion=$(TZ=GMT date -d @$(($latest_import_time/1000)) +"%a, %d %b %Y %T %Z")
               
               http_status=$( gh api repos/${{ github.repository }}/code-scanning/alerts -H "If-Modified-Since: $timestamp_conversion" -i | grep "HTTP" | awk '{print $2}')
-              echo "http_status=$http_status" >> $GITHUB_ENV
+              echo "action_state=yellow" >> $GITHUB_ENV
               
               echo $timestamp_conversion
               echo $http_status
@@ -36,15 +39,9 @@ jobs:
          
        
       - name: Set variable
-        run: echo "export TEST_VAR=hello world" >> $GITHUB_ENV
+        run: echo "${{ env.action_state }}"
         shell: bash
 
-      - name: Install Terminus
-        shell: bash
-        run: |
-           echo "The value of TEST_VAR is $TEST_VAR"
-        env:
-         TERMINUS_RELEASE: ${{ env.TERMINUS_RELEASE }}
          
 #  create_output_file:
 #     runs-on: ubuntu-latest
