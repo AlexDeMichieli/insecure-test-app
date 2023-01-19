@@ -25,7 +25,7 @@ jobs:
               --header 'Accept: application/json' \
               --header 'Authorization: APIKEY ${{secrets.TFIX_API_KEY}}' | jq '.object[0].importTime')
               timestamp_conversion=$(TZ=GMT date -d @$(($latest_import_time/1000)) +"%a, %d %b %Y %T %Z")
-              http_status=$( gh api repos/${{ github.repository }}/code-scanning/alerts -H "If-Modified-Since: $timestamp_conversion" -i | grep "HTTP" | awk '{print $2}')
+              http_status=$( gh api repos/${{ github.repository }}/code-scanning/alerts -H "If-Modified-Since: Thu, 18 Jan 2023 21:30:42 GMT" -i | grep "HTTP" | awk '{print $2}')
               echo $http_status
               echo $timestamp_conversion
               if [ "$http_status" == "304" ]; then
