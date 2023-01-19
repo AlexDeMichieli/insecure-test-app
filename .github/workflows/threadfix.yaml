@@ -28,6 +28,9 @@ jobs:
                 exit 1
               else
                 gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
+                value=`cat output_file.threadfix`
+                echo $value
+                ls -a
               fi
 
         env:
