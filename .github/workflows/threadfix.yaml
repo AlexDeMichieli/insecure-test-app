@@ -22,9 +22,19 @@ jobs:
               --header 'Accept: application/json' \
               --header 'Authorization: APIKEY ${{secrets.TFIX_API_KEY}}' | jq '.object[0].importTime')
               
+              timestamp_conversion=$(TZ=GMT date -d @$(($latest_import_time/1000)) +"%a, %d %b %Y %T %Z")
+              http_status=$( gh api repos/${{ github.repository }}/code-scanning/alerts -H "If-Modified-Since: $timestamp_conversion" -i | grep "HTTP" | awk '{print $2}')
+              echo $timestamp_conversion
+              echo $http_status
+              
               gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: look around
+        run: |
+          value=`cat output_file.threadfix`
+          echo $value
+          ls -a
       - name: Validate file 
         run : |
               cat input_file.json | grep "number" >/dev/null && echo "got data!" || exit 1; 
