@@ -36,7 +36,8 @@ jobs:
          
        
       - name: Set variable
-        run: echo "${{ env.status }}"
+        run: |
+               echo "${{ env.status }}"
         shell: bash
 
          
