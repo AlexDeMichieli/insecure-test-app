@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Get Last Modified Value
-      #  uses: actions/checkout@v3
+        uses: actions/checkout@v3
       - run: |     
          
               latest_import_time=$(curl --location --request GET '${{secrets.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/1/scans' \
@@ -38,12 +38,7 @@ jobs:
       - name: Set variable
         uses: actions/checkout@v3
       - run: |
-               echo "${{ env.status }}"
-               #    if [ $http_status = "304" ]; then
-#                 exit 1
-#               else
-#                 gh api repos/${{ github.repository }}/code-scanning/alerts --paginate | jq --slurp 'flatten' > ./input_file.json
-#               fi
+              echo "${{ env.status }}"
 
 
          
