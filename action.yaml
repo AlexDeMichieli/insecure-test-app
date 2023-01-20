@@ -53,14 +53,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: test
-      run: |
-             latest_import_time=$(curl --location --request GET '${{inputs.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/1/scans' \
-             --header 'Accept: application/json' \
-             --header 'Authorization: APIKEY ${{inputs.TFIX_API_KEY}}' | jq '.object[0].importTime')
-             timestamp_conversion=$(TZ=GMT date -d @$(($latest_import_time/1000)) +"%a, %d %b %Y %T %Z")
-             echo $timestamp_conversion
-      shell: bash
     - name: Get code scanning alerts
       run: |
              latest_import_time=$(curl --location --request GET '${{inputs.TFIX_INSTANCE_URL}}/threadfix/rest/latest/applications/1/scans' \
