@@ -141,7 +141,7 @@ jobs:
           value=`cat input_file.json`
           echo $value
       - name: Run conversion script
-        run: python sarif_converter.py input_file.json output_file.threadfix
+        run: python threadfix_converter.py input_file.json output_file.threadfix
       - name: look around
         run: |
           value=`cat output_file.threadfix`
