@@ -185,7 +185,7 @@ jobs:
       - name: GET code scanning alerts
         uses: actions/checkout@v3
       - run: | 
-              gh api repos/${{github.repository}}/code-scanning/alerts -F state=open -F ref=${{github.ref}} --paginate | jq --slurp 'flatten' > ./input_file.json
+              gh api -X GET repos/${{github.repository}}/code-scanning/alerts -F state=open -F ref=${{github.ref}} --paginate | jq --slurp 'flatten' > ./input_file.json
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Validate file 
