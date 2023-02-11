@@ -172,7 +172,11 @@
 
 name: Threadfix connector
 
-on: [ push ]
+on:
+  push:
+    branches:
+      - test
+
 
 permissions:
   security-events: read
