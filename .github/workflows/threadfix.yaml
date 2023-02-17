@@ -223,7 +223,11 @@ jobs:
           value=`cat input_file.json`
           echo $value
       - name: Run conversion script
-        run: python threadfix_converter.py input_file.json output_file.threadfix "${{github.repository}}_${{github.ref}}"
+        run: |
+              string_to_hash="${{github.repository}}_${{github.ref}}"
+              hash_value=$(echo -n "$string_to_hash" | sha256sum | cut -d ' ' -f 1)
+              truncated_hash_value=$(echo "$hash_value" | cut -c 1-255)
+              python threadfix_converter.py input_file.json output_file.threadfix $truncated_hash_value
       - name: look around
         run: |
           value=`cat output_file.threadfix`
