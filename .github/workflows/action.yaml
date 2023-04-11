@@ -25,7 +25,7 @@ jobs:
         uses: github/codeql-action/init@v2
         # Override language selection by uncommenting this and choosing your languages
         with:
-          languages: python
+          languages: ruby
 
       # Autobuild attempts to build any compiled languages (C/C++, C#, Go, or Java).
       # If this step fails, then you should remove it and run the build manually (see below).
@@ -49,5 +49,5 @@ jobs:
       - name: Upload CodeQL Analysis
         uses: actions/upload-artifact@v3
         with:
-         name: python.sarif
+         name: ruby.sarif
          path: ${{runner.workspace}}/results/*.sarif
