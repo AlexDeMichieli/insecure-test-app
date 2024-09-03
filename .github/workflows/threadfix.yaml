@@ -48,7 +48,7 @@
 #         with:
 #          python-version: '3.10'
 #       - name: Download json file and echo it
-#         uses: actions/download-artifact@v3
+#         uses: actions/download-artifact@v4.1.7
 #         with:
 #          name: SARIF
 #       - shell: bash
@@ -75,7 +75,7 @@
 #       - name: Checkout
 #         uses: actions/checkout@v3
 #       - name: Download output file and push it to threadfix
-#         uses: actions/download-artifact@v3
+#         uses: actions/download-artifact@v4.1.7
 #         with:
 #           name: SARIF
 #       - name: Push to threadfix
@@ -133,7 +133,7 @@
 #         with:
 #          python-version: '3.10'
 #       - name: Download json file and echo it
-#         uses: actions/download-artifact@v3
+#         uses: actions/download-artifact@v4.1.7
 #         with:
 #          name: SARIF
 #       - shell: bash
@@ -160,7 +160,7 @@
 #       - name: Checkout
 #         uses: actions/checkout@v3
 #       - name: Download output file and push it to threadfix
-#         uses: actions/download-artifact@v3
+#         uses: actions/download-artifact@v4.1.7
 #         with:
 #           name: SARIF
 #       - name: Push to threadfix
@@ -215,7 +215,7 @@ jobs:
         with:
          python-version: '3.10'
       - name: Download json file and echo it
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
          name: SARIF
       - shell: bash
@@ -246,7 +246,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Download output file and push it to threadfix
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: SARIF
       - name: Push to threadfix
